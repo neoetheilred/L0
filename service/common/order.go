@@ -1,12 +1,8 @@
 package common
 
 import (
-	"database/sql"
-	"encoding/json"
-	"strings"
 	"time"
 
-	"github.com/go-playground/validator/v10"
 	"gorm.io/gorm"
 )
 
@@ -69,96 +65,4 @@ type Item struct {
 	Brand       string `json:"brand"`
 	Status      int    `json:"status"`
 	OrderID     int    `json:"-"`
-}
-
-func (order *Order) Validate() bool {
-	err := validator.New().Struct(order)
-	// errDelivery := validator.New().Struct(order.Delivery)
-
-	return err == nil
-
-	// return err == nil && errDelivery == nil
-}
-
-func NewOrder(OrderUID string,
-	TrackNumber string,
-	Entry string,
-	delivery string, /*json string*/
-	payment string, /*jsong string*/
-	Items string, /*json string*/
-	Locale string,
-	InternalSignature string,
-	CustomerID string,
-	DeliveryService string,
-	Shardkey string,
-	SmID int,
-	DateCreated time.Time,
-	OffShard string,
-) *Order {
-	var d Delivery
-	var p Payment
-	var items []Item
-	json.NewDecoder(strings.NewReader(delivery)).Decode(&d)
-	json.NewDecoder(strings.NewReader(payment)).Decode(&p)
-	json.NewDecoder(strings.NewReader(Items)).Decode(&items)
-	return &Order{
-		OrderUID:    OrderUID,
-		TrackNumber: TrackNumber,
-		Entry:       Entry,
-		// Delivery:          &d,
-		// Payment:           &p,
-		// Items:             items,
-		Locale:            Locale,
-		InternalSignature: InternalSignature,
-		CustomerID:        CustomerID,
-		DeliveryService:   DeliveryService,
-		Shardkey:          Shardkey,
-		SmID:              SmID,
-		DateCreated:       DateCreated,
-		OofShard:          OffShard,
-	}
-}
-
-func OrderFromRow(rows *sql.Rows) (*Order, bool) {
-	if rows.Next() {
-		var (
-			OrderUID          string
-			TrackNumber       string
-			Entry             string
-			Delivery          string
-			Payment           string
-			Items             string
-			Locale            string
-			InternalSignature string
-			CustomerID        string
-			DeliveryService   string
-			Shardkey          string
-			SmID              int
-			DateCreated       time.Time
-			OofShard          string
-		)
-		rows.Scan(
-			&OrderUID,
-			&TrackNumber,
-			&Entry,
-			&Delivery,
-			&Payment,
-			&Items,
-			&Locale,
-			&InternalSignature,
-			&CustomerID,
-			&DeliveryService,
-			&Shardkey,
-			&SmID,
-			&DateCreated,
-			&OofShard,
-		)
-		res := NewOrder(OrderUID, TrackNumber,
-			Entry, Delivery, Payment, Items, Locale, InternalSignature,
-			CustomerID, DeliveryService, Shardkey, SmID, DateCreated, OofShard,
-		)
-		// fmt.Println(OrderUID, TrackNumber)
-		return res, true
-	}
-	return nil, false
 }
