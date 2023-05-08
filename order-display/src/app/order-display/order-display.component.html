@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="order">
+        <form style="width: 80%;">
+            <mat-form-field style="width:100%; padding: 1rem;">
+                <input matInput type="text" placeholder="1" value="1" [formControl]="orderId" />
+                <button matSuffix (click)="getOrder()">
+                    <mat-icon>arrow_right</mat-icon>
+                </button>
+            </mat-form-field>
+        </form>
+        <code>
+            <pre>
+{{stringify()}}
+            </pre>
+        </code>
+    </div>
+    <div class="available">
+        <h3>Cached ids</h3>
+        <ul>
+            <li *ngFor="let id of availableIds">
+                <a (click)="getOrderById(id)">{{id}}</a>
+            </li>
+        </ul>
+    </div>
+</div>

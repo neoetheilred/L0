@@ -1,0 +1,47 @@
+services:
+  db:
+    build: ./postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: toor
+      POSTGRES_USER: root
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  
+  nats:
+    image: nats-streaming
+    ports:
+      - 4222:4222
+  
+  adminer: # database inspector
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+  frontend: # simple web-client
+    build: order-display
+    ports:
+      - 8081:8081
+  
+  service: # sevice listening to nats-streaming
+    build: service
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 8000:8000
+    environment:
+      - DB_HOST=l0-db-1
+      - DB_PORT=5432
+      - DB_USER=root
+      - DB_PASSWORD=toor
+      - DB_DBNAME=root
+      - NATS_URI=l0-nats-1
+      - NATS_PORT=4222
