@@ -27,17 +27,18 @@ func (s *Service) handleFindOrderById(w http.ResponseWriter, r *http.Request) {
 	log.Println(id)
 	if order, ok := s.cache[id]; ok {
 		log.Println("cache")
-		log.Println(order)
+		log.Printf("Returing order with uid: %s\n", order.OrderUID)
 		json.NewEncoder(w).Encode(order)
 	} else {
 		var order Order
 		r := s.db.Preload(clause.Associations).First(&order, "order_uid = ?", id)
 		if r.Error != nil {
 			log.Printf("Not found order with id %s\n", id)
-			w.WriteHeader(http.StatusNotFound)
+			// w.WriteHeader(http.StatusNotFound)
+			json.NewEncoder(w).Encode(map[string]string{"Error": "Not found"})
 			return
 		} else {
-			log.Println(order)
+			log.Printf("Returing order with uid: %s\n", order.OrderUID)
 			json.NewEncoder(w).Encode(order)
 		}
 	}

@@ -8,7 +8,6 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/nats-io/stan.go"
-	"gorm.io/gorm/clause"
 )
 
 func natsUri() string {
@@ -35,7 +34,6 @@ func (s *Service) acceptOrders(msg *stan.Msg) {
 		return
 	}
 	s.db.Create(&order)
-	s.db.Preload(clause.Associations).Last(&order)
-	fmt.Println(order)
+	log.Printf("Received order with id: %s\n", order.OrderUID)
 	s.cache[order.OrderUID] = &order
 }
