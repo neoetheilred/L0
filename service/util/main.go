@@ -68,9 +68,9 @@ type Foo struct {
 }
 
 func main() {
-	natsUri := os.Getenv("NATS_URI")
-	natsPort := os.Getenv("NATS_PORT")
-	sc, err := stan.Connect("test-cluster", "sender", stan.NatsURL(fmt.Sprintf("nats://%s:%s", natsUri, natsPort)))
+	// natsUri := os.Getenv("NATS_URI")
+	// natsPort := os.Getenv("NATS_PORT")
+	sc, err := stan.Connect("test-cluster", "sender")
 	if err != nil {
 		log.Fatal(err)
 	}
