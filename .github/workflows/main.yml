@@ -6,7 +6,7 @@ on:
       - "main"
 
 jobs:
-  build:
+  build-and-push-service-image:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -25,3 +25,15 @@ jobs:
           file: ./service/Dockerfile
           push: true
           tags: ${{secrets.DOCKERHUB_USERNAME}}/l0:latest
+  
+  test-compose:
+    name: Test `docker-compose up`
+    needs: build-and-push-service-image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Perform docker-compose up
+        uses: isbang/compose-action@v1.4.1
+        with:
+          compose-file: ./docker-compose.yml
