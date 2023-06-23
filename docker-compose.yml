@@ -30,7 +30,7 @@ services:
       - 8081:8081
   
   service: # sevice listening to nats-streaming
-    build: ehteilred/l0-service:latest
+    image: ehteilred/l0-service:latest
     restart: always
     depends_on:
       db:
