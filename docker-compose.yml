@@ -25,7 +25,7 @@ services:
       - 8080:8080
 
   frontend: # simple web-client
-    build: order-display
+    image: ehteilred/l0-order-display:latest
     ports:
       - 8081:8081
   

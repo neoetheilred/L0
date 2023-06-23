@@ -1,6 +1,7 @@
 name: Build docker images and push do registry
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - "main"
@@ -32,7 +33,14 @@ jobs:
           file: ./postgres/Dockerfile
           push: true
           tags: ${{secrets.DOCKERHUB_USERNAME}}/l0-postgres:latest
-  
+      - name: Build and push ui (order-display)
+        uses: docker/build-push-action@v4
+        with:
+          context: ./order-display
+          file: ./order-display/Dockerfile
+          push: true
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/l0-order-display:latest
+
   test-compose:
     name: Test `docker-compose up`
     needs: build-and-push-images
