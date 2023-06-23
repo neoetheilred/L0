@@ -1,0 +1,14 @@
+# U
+
+name: Build docker images and push do registry
+
+on:
+  push:
+    branches: 
+      - main
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up QEMU
