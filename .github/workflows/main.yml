@@ -61,9 +61,10 @@ jobs:
         with:
           to: ${{secrets.TELEGRAM_TO}}
           token: ${{secrets.TELEGRAM_TOKEN}}
+          format: markdown
           message: |
             Repository: ```${{github.repository}}```
             ```${{github.actor}}``` pushed to branch `main`:
-            Commit message: ${{github.event.head_commit.message}}
+            Commit message: ```${{github.event.head_commit.message}}```
             https://github.com/${{ github.repository }}/commit/${{github.sha}}
 
