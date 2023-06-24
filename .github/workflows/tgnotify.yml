@@ -19,7 +19,11 @@ jobs:
         id: message_text
         # run: echo "::set-output name=message::${\n\n}"
         run: |
-          echo 'text=#${{steps.repo_name.outputs.fragment}} #${{github.actor}}' >> $GITHUB_OUTPUT
+          echo 'text=#${{steps.repo_name.outputs.fragment}} #${{github.actor}}
+          Repository: ***${{github.repository}}***
+          ***${{github.actor}}*** pushed to branch `main`
+          Commit message: ***${{github.event.head_commit.message}}***
+          https://github.com/${{ github.repository }}/commit/${{github.sha}}' >> $GITHUB_OUTPUT
         #  echo '#${{steps.repo_name.outputs.fragment}} #${{github.actor}}
         #  Repository: ***${{github.repository}}***
         #  ***${{github.actor}}*** pushed to branch `main`
