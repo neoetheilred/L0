@@ -66,5 +66,3 @@ jobs:
             Commit message: ${{github.event.head_commit}}
             https://github.com/${{ github.repository }}/commit/${{github.sha}}
 
-
-            
