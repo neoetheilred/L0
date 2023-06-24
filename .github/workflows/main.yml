@@ -63,6 +63,7 @@ jobs:
           token: ${{secrets.TELEGRAM_TOKEN}}
           format: markdown
           message: |
+            #${{github.repository}} #${{github.actor}}
             Repository: ```${{github.repository}}```
             ```${{github.actor}}``` pushed to branch `main`:
             Commit message: ```${{github.event.head_commit.message}}```
