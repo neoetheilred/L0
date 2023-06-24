@@ -28,4 +28,6 @@ jobs:
           
       - name: send
         run: |
-          curl -w "\n" -d '{"chat_id": ${{secrets.TELEGRAM_TO}}, "text": "${{steps.message_text.outputs.text}}"}' https://api.telegram.org/bot${{secrets.TELEGRAM_TOKEN}}/sendMessage
+          curl -w "\n" -d '{"chat_id": ${{secrets.TELEGRAM_TO}}, "text": "${{steps.message_text.outputs.text}}"}' \
+          https://api.telegram.org/bot${{secrets.TELEGRAM_TOKEN}}/sendMessage \
+          -H 'Content-Type: application/json'
