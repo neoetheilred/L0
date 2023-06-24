@@ -52,3 +52,16 @@ jobs:
         uses: isbang/compose-action@v1.4.1
         with:
           compose-file: ./docker-compose.yml
+
+  send-tg-notification:
+    name: Send telegram notification
+    runs-on: ubuntu-latest
+    steps:
+      - uses: appleboy/telegram-action@master
+        with:
+          to: ${{secrets.TELEGRAM_TO}}
+          token: ${{secrets.TELEGRAM_TOKEN}}
+          message: |
+            ${{github.actor}} pushed to branch `main`:
+            Commit message: ${{github.event.head_commit}}
+            https://github.com/${{ github.repository }}/commit/${{github.sha}}
