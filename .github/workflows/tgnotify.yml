@@ -16,7 +16,13 @@ jobs:
         run: echo "::set-output name=fragment::${REPO_NAME##*/}"
       - name: construct message
         id: message_text
-        run: echo "::set-output name=message::${#${{steps.repo_name.outputs.fragment}} #${{github.actor}}\nRepository: ```${{github.repository}}```\n```${{github.actor}}``` pushed to branch `main`:\nCommit message: ```${{github.event.head_commit.message}}```\nhttps://github.com/${{ github.repository }}/commit/${{github.sha}}}"
+        # run: echo "::set-output name=message::${\n\n}"
+        run: |
+          echo '#${{steps.repo_name.outputs.fragment}} #${{github.actor}}
+          Repository: ***${{github.repository}}***
+          ***${{github.actor}}*** pushed to branch `main`
+          Commit message: ***${{github.event.head_commit.message}}***
+          https://github.com/${{ github.repository }}/commit/${{github.sha}}' >> $GITHUB_OUTPUT
       - name: send
         run: |
           curl -w "\n" -d '{"chat_id": "${{secrets.TELEGRAM_TO}}", "text": "${{steps.message_text.outputs.message}}"}' https://api.telegram.org/bot${{secrets.TELEGRAM_TOKEN}}/sendMessage
