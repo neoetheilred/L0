@@ -19,11 +19,22 @@ jobs:
         id: message_text
         # run: echo "::set-output name=message::${\n\n}"
         run: |
-          echo 'text="#${{steps.repo_name.outputs.fragment}} #${{github.actor}}
+          MESSAGE_TEXT=$(cat<<EOF
+          #${{steps.repo_name.outputs.fragment}} #${{github.actor}}
           Repository: ***${{github.repository}}***
           ***${{github.actor}}*** pushed to branch `main`
           Commit message: ***${{github.event.head_commit.message}}***
-          https://github.com/${{ github.repository }}/commit/${{github.sha}}"' >> $GITHUB_OUTPUT
+          https://github.com/${{ github.repository }}/commit/${{github.sha}}
+          EOF
+          )
+          echo "MESSAGE_TEXT<<EOF" >> $GITHUB_ENV
+          echo "$MESSAGE_TEXT" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+        #  echo 'text="#${{steps.repo_name.outputs.fragment}} #${{github.actor}}
+        #  Repository: ***${{github.repository}}***
+        #  ***${{github.actor}}*** pushed to branch `main`
+        #  Commit message: ***${{github.event.head_commit.message}}***
+        #  https://github.com/${{ github.repository }}/commit/${{github.sha}}"' >> $GITHUB_OUTPUT
         #  echo '#${{steps.repo_name.outputs.fragment}} #${{github.actor}}
         #  Repository: ***${{github.repository}}***
         #  ***${{github.actor}}*** pushed to branch `main`
@@ -32,6 +43,6 @@ jobs:
           
       - name: send
         run: |
-          curl -w "\n" -d '{"chat_id": ${{secrets.TELEGRAM_TO}}, "text": "${{steps.message_text.outputs.text}}"}' \
+          curl -w "\n" -d '{"chat_id": ${{secrets.TELEGRAM_TO}}, "text": "${{env.MESSAGE_TEXT}}"}' \
           https://api.telegram.org/bot${{secrets.TELEGRAM_TOKEN}}/sendMessage \
           -H 'Content-Type: application/json'
