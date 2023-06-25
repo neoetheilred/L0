@@ -15,6 +15,7 @@ jobs:
           telegram_token: ${{secrets.TELEGRAM_TOKEN}}
           chat_id: ${{secrets.TELEGRAM_TO}}
           message: 'test'
+          
   send_notification:
     name: Send notification
     runs-on: ubuntu-latest
