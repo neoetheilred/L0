@@ -14,7 +14,13 @@ jobs:
         with:
           telegram_token: ${{secrets.TELEGRAM_TOKEN}}
           chat_id: ${{secrets.TELEGRAM_TO}}
-          message: 'test'
+          formatting: MarkdownV2
+          message: |
+            \\\\#${{steps.repo_name.outputs.fragment}} \\\\#${{github.actor}}
+            Repository: \`${{github.repository}}\`
+            `${{github.actor}}` pushed to branch `main`
+            Commit message: `${{github.event.head_commit.message}}`
+            [Commit details](https://github.com/${{ github.repository }}/commit/${{github.sha}})
           
   send_notification:
     name: Send notification
