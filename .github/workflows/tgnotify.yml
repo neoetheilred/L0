@@ -21,10 +21,10 @@ jobs:
         run: |
           MESSAGE_TEXT=$(cat<<EOF
           \\\\#${{steps.repo_name.outputs.fragment}} \\\\#${{github.actor}}
-          Repository: `${{github.repository}}`
-          `${{github.actor}}` pushed to branch `main`
-          Commit message: `${{github.event.head_commit.message}}`
-          [inline URL](https://github.com/${{ github.repository }}/commit/${{github.sha}})
+          Repository: \`${{github.repository}}\`
+          \`${{github.actor}}\` pushed to branch \`main\`
+          Commit message: \`${{github.event.head_commit.message}}\`
+          [Commit details](https://github.com/${{ github.repository }}/commit/${{github.sha}})
           EOF
           )
           echo "MESSAGE_TEXT<<EOF" >> $GITHUB_ENV
