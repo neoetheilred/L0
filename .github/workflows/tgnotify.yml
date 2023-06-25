@@ -20,7 +20,7 @@ jobs:
         # run: echo "::set-output name=message::${\n\n}"
         run: |
           MESSAGE_TEXT=$(cat<<EOF
-          #${{steps.repo_name.outputs.fragment}} #${{github.actor}}
+          \\#${{steps.repo_name.outputs.fragment}} \\#${{github.actor}}
           Repository: `${{github.repository}}`
           `${{github.actor}}` pushed to branch `main`
           Commit message: `${{github.event.head_commit.message}}`
