@@ -21,9 +21,9 @@ jobs:
         run: |
           MESSAGE_TEXT=$(cat<<EOF
           #${{steps.repo_name.outputs.fragment}} #${{github.actor}}
-          Repository: ***${{github.repository}}***
-          ***${{github.actor}}*** pushed to branch `main`
-          Commit message: ***${{github.event.head_commit.message}}***
+          Repository: `${{github.repository}}`
+          `${{github.actor}}` pushed to branch `main`
+          Commit message: `${{github.event.head_commit.message}}`
           https://github.com/${{ github.repository }}/commit/${{github.sha}}
           EOF
           )
@@ -43,6 +43,6 @@ jobs:
           
       - name: send
         run: |
-          curl -w "\n" -d '{"chat_id": ${{secrets.TELEGRAM_TO}}, "text": "${{env.MESSAGE_TEXT}}"}' \
+          curl -w "\n" -d '{"chat_id": ${{secrets.TELEGRAM_TO}}, "text": "${{env.MESSAGE_TEXT}}", "parse_mode": "MarkdownV2"}' \
           https://api.telegram.org/bot${{secrets.TELEGRAM_TOKEN}}/sendMessage \
           -H 'Content-Type: application/json'
