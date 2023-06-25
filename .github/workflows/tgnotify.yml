@@ -5,6 +5,16 @@ on:
   workflow_dispatch:
 
 jobs:
+  send_notification-with-custom-action:
+    name: Custom tg notification
+    runs-on: ubuntu-latest
+    steps:
+      - name: send
+        uses: neoetheilred/tgnotification@main
+        with:
+          telegram_token: ${{secrets.TELEGRAM_TOKEN}}
+          chat_id: ${{secrets.TELEGRAM_TO}}
+          message: 'test'
   send_notification:
     name: Send notification
     runs-on: ubuntu-latest
